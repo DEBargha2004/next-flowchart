@@ -1,11 +1,11 @@
-import { SignIn } from '@clerk/nextjs'
+import { SignIn } from "@clerk/nextjs";
 
-function Page () {
+function Page() {
   return (
-    <div className='w-full h-full flex justify-center items-center'>
+    <div className="flex h-full w-full items-center justify-center">
       <SignIn />
     </div>
-  )
+  );
 }
 
-export default Page
+export default Page;

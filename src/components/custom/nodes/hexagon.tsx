@@ -2,17 +2,14 @@ import { useAppDispatch } from '@/hooks/redux-essentials'
 import { NodeData } from '@/types/node'
 import React from 'react'
 import { Handle, NodeProps, Position } from 'reactflow'
-import { updateNode } from '@/reducers/node'
+import { updateNode, updateNodeData } from '@/reducers/node'
 import NodeWrapper from '../node-wrapper'
 import { HexagonSVG } from '../shapes'
+import chroma from 'chroma-js'
 
-function HexagonNode ({ id, data }: NodeProps<NodeData>) {
-  const dispatch = useAppDispatch()
-  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    dispatch(updateNode({ id: id, data: { ...data, label: e.target.value } }))
-  }
+function HexagonNode ({ id, data, ...props }: NodeProps<NodeData>) {
   return (
-    <NodeWrapper id={id} height={data.height} width={data.width}>
+    <NodeWrapper id={id} data={data} includeInput {...props}>
       <div
         className={`flex h-full w-full items-center justify-center`}
         // style={{ backgroundColor: data.color }}
@@ -23,9 +20,10 @@ function HexagonNode ({ id, data }: NodeProps<NodeData>) {
           fill={data.color}
           height={data.height}
           width={data.width}
-          strokeColor='#000'
+          strokeColor={chroma(data.color).brighten().hex()}
           strokeWidth={2}
         />
+
         <Handle position={Position.Bottom} type='source' />
       </div>
     </NodeWrapper>

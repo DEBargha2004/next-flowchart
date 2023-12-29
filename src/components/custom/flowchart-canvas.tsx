@@ -6,6 +6,8 @@ import ReactFlow, {
   Controls,
   EdgeChange,
   MarkerType,
+  Node,
+  NodeChange,
   NodeProps
 } from 'reactflow'
 
@@ -38,10 +40,12 @@ function FlowChartCanvas () {
     []
   )
 
-  const nodes = useAppState(state => state.nodes)
+  const nodes = useAppState(state => state.nodes.nodes)
   const edges = useAppState(state => state.edges)
 
   useEffect(() => {
+    console.log('mounted flowchart canvas')
+
     const handleWindowResize = (e: UIEvent) => {
       dispatch(
         setWindowDimension({
@@ -83,24 +87,36 @@ function FlowChartCanvas () {
       ),
     []
   )
+
+  const handleNodeContextMenu = useCallback(
+    (
+      e: React.MouseEvent<Element, MouseEvent>,
+      node: Node<NodeData, string | undefined>
+    ) => {
+      e.preventDefault()
+      console.log(node)
+    },
+    []
+  )
+
+  const handleNodeChange = useCallback((nodeChange: NodeChange[]) => {
+    // console.log(nodeChange)
+
+    dispatch(updateNode(nodeChange))
+  }, [])
   return (
     <>
       <ReactFlow
         //@ts-ignore
         nodes={nodes}
         edges={edges}
-        onNodesChange={node =>
-          dispatch(
-            updateNode({
-              id: node[0].id,
-              position: node[0].position
-            })
-          )
-        }
+        onNodesChange={handleNodeChange}
         onEdgesChange={(edgeChange: EdgeChange[]) => {
           console.log(edgeChange)
         }}
+        fitView
         onConnect={onConnect}
+        onNodeContextMenu={handleNodeContextMenu}
         nodeTypes={nodeTypes}
         onEdgeClick={(_, clicked_edge) => {
           dispatch(deleteEdge({ id: clicked_edge.id }))
@@ -108,10 +124,6 @@ function FlowChartCanvas () {
       >
         <Background gap={14} size={1} />
         <Controls />
-        {/* <MiniMap
-        // nodeColor={(node: Node<NodeData>) => node.data.color}
-        // nodeComponent={node => <MinimapNode node={node} key={node.id} />}
-        /> */}
       </ReactFlow>
       <ShapesBucket position='top-left' />
     </>

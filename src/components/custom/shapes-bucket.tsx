@@ -89,10 +89,6 @@ function Row ({ children }: { children: ReactNode }) {
   return <div className='flex items-center gap-1'>{children}</div>
 }
 function ShapesBucket ({ position }: { position: Position }) {
-  const viewport = useViewport()
-
-  console.log(viewport.x, viewport.y, viewport.zoom)
-
   return (
     <div
       className={cn(

@@ -12,8 +12,10 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.1",
+    "@radix-ui/react-context-menu": "^2.1.5",
     "@radix-ui/react-hover-card": "^1.0.7",
     "@reduxjs/toolkit": "^2.0.1",
+    "chroma-js": "^2.4.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "immer": "^10.0.3",
@@ -30,6 +32,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
+    "@types/chroma-js": "^2.4.3",
     "@types/lodash": "^4.14.202",
     "@types/node": "^20",
     "@types/react": "^18",

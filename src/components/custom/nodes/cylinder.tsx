@@ -1,18 +1,15 @@
 import { useAppDispatch } from '@/hooks/redux-essentials'
 import { NodeData } from '@/types/node'
-import React from 'react'
-import { Handle, NodeProps, Position } from 'reactflow'
-import { updateNode } from '@/reducers/node'
+import React, { useCallback } from 'react'
+import { Handle, NodeProps, Position, NodeChange } from 'reactflow'
+import { updateNodeData } from '@/reducers/node'
 import NodeWrapper from '../node-wrapper'
 import { CylinderSVG } from '../shapes'
+import chroma from 'chroma-js'
 
-function CylinderNode ({ id, data }: NodeProps<NodeData>) {
-  const dispatch = useAppDispatch()
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(updateNode({ id: id, data: { ...data, label: e.target.value } }))
-  }
+function CylinderNode ({ id, data, ...props }: NodeProps<NodeData>) {
   return (
-    <NodeWrapper id={id} height={data.height} width={data.width}>
+    <NodeWrapper id={id} data={data} includeInput {...props}>
       <div
         className={`flex h-full w-full items-center justify-center rounded-xl`}
         // style={{ backgroundColor: data.color }}
@@ -23,15 +20,10 @@ function CylinderNode ({ id, data }: NodeProps<NodeData>) {
           fill={data.color}
           height={data.height}
           width={data.width}
-          strokeColor='#000'
+          strokeColor={chroma(data.color).brighten().hex()}
           strokeWidth={2}
         />
-        <input
-          value={data.label}
-          spellCheck={false}
-          onChange={handleInputChange}
-          className='resize-none overflow-hidden text-sm border-none bg-transparent text-center outline-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
-        />
+
         <Handle position={Position.Bottom} type='source' />
       </div>
     </NodeWrapper>

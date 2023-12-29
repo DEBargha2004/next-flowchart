@@ -15,27 +15,17 @@ export type PayloadNodeData = {
 
 export type CreatePayloadNodeData = {
   id: string
-  position?: {
+  position: {
     x: number
     y: number
   }
-  type?: NodeType
-  data?: NodeData
+  type: NodeType
+  data: NodeData
 }
 
 export type UpdatePayloadNodeData = {
   id: string
-  position?: {
-    x: number
-    y: number
-  }
-  type?: NodeType
-  data?: {
-    color?: string
-    label?: string
-    height?: number
-    width?: number
-  }
+  data: { color?: string; label?: string; height?: number; width?: number }
 }
 
 export type NodeData = {

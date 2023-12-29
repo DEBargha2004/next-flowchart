@@ -14,9 +14,10 @@ function TriangleSVG ({
   return (
     <svg width={width} height={height}>
       <polygon
-        points={`${width / 2},${strokeWidth / 2} ${width - strokeWidth / 2},${
-          height - strokeWidth / 2
-        } ${strokeWidth / 2},${height - strokeWidth / 2}`}
+        points={`
+        ${width / 2},${strokeWidth / 2} 
+        ${width - strokeWidth / 2},${height - strokeWidth / 2} 
+        ${strokeWidth / 2},${height - strokeWidth / 2}`}
         fill={fill}
         stroke={strokeColor}
         strokeWidth={strokeWidth}

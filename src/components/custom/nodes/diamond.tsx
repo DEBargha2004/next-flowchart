@@ -9,18 +9,16 @@ import chroma from 'chroma-js'
 function DiamondNode ({ data, id, ...props }: NodeProps<NodeData>) {
   return (
     <NodeWrapper id={id} data={data} includeInput {...props}>
-      <div className='relative h-full w-full'>
-        <Handle position={Position.Top} type='target' />
-        <DiamondSVG
-          fill={data.color}
-          height={data.height}
-          width={data.width}
-          strokeColor={chroma(data.color).brighten().hex()}
-          strokeWidth={2}
-        />
+      <Handle position={Position.Top} type='target' />
+      <DiamondSVG
+        fill={data.color}
+        height={data.height}
+        width={data.width}
+        strokeColor={chroma(data.color).brighten().hex()}
+        strokeWidth={2}
+      />
 
-        <Handle position={Position.Bottom} type='source' />
-      </div>
+      <Handle position={Position.Bottom} type='source' />
     </NodeWrapper>
   )
 }

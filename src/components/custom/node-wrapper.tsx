@@ -9,7 +9,7 @@ import {
   ContextMenuTrigger
 } from '../ui/context-menu'
 import { NodeData } from '@/types/node'
-import { NodeProps, NodeResizer, OnResize, ResizeDragEvent } from 'reactflow'
+import { NodeProps, NodeResizer, OnResizeEnd } from 'reactflow'
 
 const colors: string[] = ['red', 'blue', 'green', 'yellow', 'purple']
 
@@ -25,7 +25,6 @@ function NodeWrapper ({
   data: NodeData
   includeInput?: boolean
 } & NodeProps<NodeData>) {
-  const [open, setOpen] = useState(false)
   const dispatch = useAppDispatch()
   const node = useAppState(state =>
     state.nodes.nodes.find(node => node.id === id)
@@ -52,44 +51,38 @@ function NodeWrapper ({
     []
   )
 
-  const handleResize: OnResize = useCallback(e => {
-    if (node) {
-      dispatch(
-        updateNodeData({
-          id,
-          data: {
-            height: node?.data.height + e.dy,
-            width: node?.data.width + e.dx
-          }
-        })
-      )
-    }
+  const handleResize: OnResizeEnd = useCallback((e, resizeParams) => {
+    // console.log(x)
+
+    dispatch(
+      updateNodeData({
+        id,
+        data: { width: resizeParams.width, height: resizeParams.height }
+      })
+    )
   }, [])
 
   return (
     <>
-      <div
-        onDoubleClick={() => setOpen(true)}
-        onClick={() => setOpen(false)}
-        style={{ height: data.height, width: data.width }}
-        className='relative'
-      >
-        <HoverCard openDelay={200} open={open}>
+      <div className='relative'>
+        <HoverCard openDelay={200} open={props.selected}>
           <HoverCardTrigger>
             <ContextMenu>
               <ContextMenuTrigger>
-                <div style={{ height: data.height, width: data.width }}>
-                  {children}
-                  {includeInput ? (
-                    <textarea
-                      ref={inputRef}
-                      contentEditable
-                      onChange={handleInputChange}
-                      className='w-fit h-[90%] absolute text-center top-1/2 left-1/2 bg-transparent resize-none border-none outline-none -translate-x-1/2 -translate-y-1/2 leading-4 overflow-hidden'
-                    ></textarea>
-                  ) : null}
-                  <NodeResizer isVisible={props.selected} />
-                </div>
+                <NodeResizer
+                  // onResizeEnd={handleResize}
+                  onResize={handleResize}
+                  isVisible={props.selected}
+                />
+                {children}
+                {includeInput ? (
+                  <textarea
+                    ref={inputRef}
+                    contentEditable
+                    onChange={handleInputChange}
+                    className='w-fit h-[90%] absolute text-center top-1/2 left-1/2 bg-transparent resize-none border-none outline-none -translate-x-1/2 -translate-y-1/2 leading-4 overflow-hidden'
+                  ></textarea>
+                ) : null}
               </ContextMenuTrigger>
               <ContextMenuContent>
                 <ContextMenuItem

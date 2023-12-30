@@ -10,20 +10,15 @@ import chroma from 'chroma-js'
 function EllipseNode ({ id, data, ...props }: NodeProps<NodeData>) {
   return (
     <NodeWrapper id={id} data={data} includeInput {...props}>
-      <div
-        className={`flex h-full w-full items-center justify-center relative`}
-        key={id}
-      >
-        <Handle position={Position.Top} type='target' />
-        <EllipseSVG
-          fill={data.color}
-          height={data.height}
-          width={data.width}
-          strokeColor={chroma(data.color).brighten().hex()}
-          strokeWidth={2}
-        />
-        <Handle position={Position.Bottom} type='source' />
-      </div>
+      <Handle position={Position.Top} type='target' />
+      <EllipseSVG
+        fill={data.color}
+        height={data.height}
+        width={data.width}
+        strokeColor={chroma(data.color).brighten().hex()}
+        strokeWidth={2}
+      />
+      <Handle position={Position.Bottom} type='source' />
     </NodeWrapper>
   )
 }

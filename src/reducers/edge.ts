@@ -23,12 +23,14 @@ const edgeReducer = createSlice({
     },
     updateEdgeProps (
       state,
-      action: PayloadAction<{ id: string; props: Edge<EdgeData> }>
+      action: PayloadAction<{ id: string; props: Partial<Edge<EdgeData>> }>
     ) {
-      const edge = state.edges.findIndex(edge => edge.id === action.payload.id)
-      if (edge !== -1) {
-        state.edges[edge] = {
-          ...state.edges[edge],
+      const edgeIndex = state.edges.findIndex(
+        edge => edge.id === action.payload.id
+      )
+      if (edgeIndex !== -1) {
+        state.edges[edgeIndex] = {
+          ...state.edges[edgeIndex],
           ...action.payload.props
         }
       }

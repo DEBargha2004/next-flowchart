@@ -1,7 +1,14 @@
-import React from 'react'
+import React, { HTMLAttributes } from 'react'
 
-function CustomContextMenuItem ({ children }: { children: React.ReactNode }) {
-  return <div className='hover:bg-slate-200 p-1 h-8 rounded'>{children}</div>
-}
+const CustomContextMenuItem = React.forwardRef<
+  HTMLDivElement,
+  HTMLAttributes<HTMLDivElement>
+>(({ children, ...props }, ref) => {
+  return (
+    <div ref={ref} className='hover:bg-slate-200 p-1 h-8 rounded' {...props}>
+      {children}
+    </div>
+  )
+})
 
 export default CustomContextMenuItem

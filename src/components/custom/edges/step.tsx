@@ -5,8 +5,9 @@ import {
   EdgeProps,
   getSmoothStepPath
 } from 'reactflow'
+import EdgeWrapper from '../edge-wrapper'
 
-function StepEdge ({ data, id, ...props }: EdgeProps<EdgeData>) {
+function StepEdge ({ ...props }: EdgeProps<EdgeData>) {
   const [path, labelX, labelY] = getSmoothStepPath({
     sourceX: props.sourceX,
     sourceY: props.sourceY,
@@ -16,17 +17,24 @@ function StepEdge ({ data, id, ...props }: EdgeProps<EdgeData>) {
     targetPosition: props.targetPosition
   })
   return (
+    // <EdgeWrapper {...props}>
     <>
-      <BaseEdge id={id} path={path} />
+      <BaseEdge id={props.id} path={path} />
       <EdgeLabelRenderer>
-        <div
-          style={{
-            position: 'absolute',
-            transform: `translate(${labelX}px,${labelY}px) translate(-50%,-50%)`
-          }}
-        >
-          <p>{data?.label}</p>
-        </div>
+        <EdgeWrapper {...props}>
+          <div
+            style={{
+              position: 'absolute',
+              transform: `translate(${labelX}px,${labelY}px) translate(-50%,-50%)`,
+              pointerEvents: 'all'
+            }}
+            className='nopan'
+          >
+            <p className='text-sm bg-white rounded shadow px-2 py-1'>
+              {props.data?.label}
+            </p>
+          </div>
+        </EdgeWrapper>
       </EdgeLabelRenderer>
     </>
   )

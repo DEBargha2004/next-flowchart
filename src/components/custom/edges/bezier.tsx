@@ -19,22 +19,26 @@ function BezierEdge ({ ...props }: EdgeProps<EdgeData>) {
   })
   return (
     <React.Fragment key={props.id}>
-      <BaseEdge id={props.id} path={path} />
-
-      <EdgeLabelRenderer>
-        <div
-          style={{
-            position: 'absolute',
-            transform: `translate(${labelX}px,${labelY}px) translate(-50%,-50%)`
-          }}
-        >
-          <EdgeWrapper {...props} key={props.id}>
-            <p className='bg-white p-1 rounded inset-1 border border-slate-500'>
-              {props.data?.label}
-            </p>
+      <>
+        <BaseEdge id={props.id} path={path} />
+        <EdgeLabelRenderer>
+          <EdgeWrapper {...props}>
+            <div
+              style={{
+                position: 'absolute',
+                transform: `translate(${labelX}px,${labelY}px) translate(-50%,-50%)`,
+                pointerEvents: 'all'
+              }}
+              className='nopan'
+            >
+              <p className='text-sm bg-white rounded shadow px-2 py-1'>
+                {props.data?.label}
+              </p>
+            </div>
           </EdgeWrapper>
-        </div>
-      </EdgeLabelRenderer>
+        </EdgeLabelRenderer>
+      </>
+      {/* </EdgeWrapper> */}
     </React.Fragment>
   )
 }

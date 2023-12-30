@@ -8,6 +8,7 @@ import {
 } from '../ui/context-menu'
 import { ReactNode, useCallback } from 'react'
 import { useAppDispatch } from '@/hooks/redux-essentials'
+import { updateEdgeProps } from '@/reducers/edge'
 
 function EdgeWrapper ({
   children,
@@ -17,20 +18,33 @@ function EdgeWrapper ({
 
   const dispatch = useAppDispatch()
 
-  const handleChangeEdgeType = useCallback((type: EdgeType) => {}, [])
+  const handleEdgeTypeChange = useCallback((type: string) => {
+    console.log(type)
+
+    dispatch(
+      updateEdgeProps({
+        id: props.id,
+        props: { type }
+      })
+    )
+  }, [])
+
+  console.log('props are ', props)
+
   return (
     <>
       <ContextMenu>
         <ContextMenuTrigger asChild>{children}</ContextMenuTrigger>
-        <ContextMenuContent>
+        <ContextMenuContent className='z-50'>
           {edgeType.map(type => {
             return (
               <ContextMenuItem
                 key={type}
                 onClick={() => {
-                  handleChangeEdgeType(type)
+                  handleEdgeTypeChange(type)
                 }}
               >
+                {}
                 {type}
               </ContextMenuItem>
             )

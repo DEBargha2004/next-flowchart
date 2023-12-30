@@ -40,13 +40,22 @@ type ContextMenuPosition = {
   y: number
 } | null
 
+type EdgeContextMenuProps = {
+  position: ContextMenuPosition
+  props: Edge<EdgeData>
+  event: React.MouseEvent<Element, MouseEvent>
+}
+
 function FlowChartCanvas () {
   const [edgeContextMenu, setEdgeContextMenu] =
-    useState<ContextMenuPosition>(null)
+    useState<EdgeContextMenuProps | null>(null)
 
   const edgeContextMenuRef = useRef<HTMLDivElement>(null)
 
-  const edgeType: EdgeType[] = ['bezierEdge', 'stepEdge']
+  const edgeCollectionList: { label: string; type: EdgeType }[] = [
+    { label: 'Curved Edge', type: 'bezierEdge' },
+    { label: 'Step Edge', type: 'stepEdge' }
+  ]
 
   const dispatch = useAppDispatch()
 
@@ -131,13 +140,15 @@ function FlowChartCanvas () {
 
   const handleEdgeContextMenu: EdgeMouseHandler = useCallback((e, edge) => {
     e.preventDefault()
-    const { clientX, clientY } = e
-    const calculatedMenuWidth = window.innerWidth - clientX
-    const calculatedMenuHeight = window.innerHeight - clientY
-    const contextMenuPosition: ContextMenuPosition = { x: clientX, y: clientY }
-    contextMenuPosition.x = calculatedMenuWidth < 200 ? clientX - 200 : clientX
-    contextMenuPosition.y = calculatedMenuHeight < 72 ? clientY - 72 : clientY
-    setEdgeContextMenu(contextMenuPosition)
+    // console.log(edge)
+
+    // const { clientX, clientY } = e
+    // const calculatedMenuWidth = window.innerWidth - clientX
+    // const calculatedMenuHeight = window.innerHeight - clientY
+    // const contextMenuPosition: ContextMenuPosition = { x: clientX, y: clientY }
+    // contextMenuPosition.x = calculatedMenuWidth < 200 ? clientX - 200 : clientX
+    // contextMenuPosition.y = calculatedMenuHeight < 72 ? clientY - 72 : clientY
+    // setEdgeContextMenu({ event: e, position: contextMenuPosition, props: edge })
   }, [])
 
   const handleNodeChange = useCallback((nodeChange: NodeChange[]) => {
@@ -150,7 +161,7 @@ function FlowChartCanvas () {
 
   const handleEdgeUpdate: OnEdgeUpdateFunc<EdgeData> = useCallback(
     (oldEdge: Edge<EdgeData>, newConnection: Connection) => {
-      console.log(oldEdge)
+      // console.log(oldEdge)
 
       dispatch(updateConnection({ id: oldEdge.id, connection: newConnection }))
     },
@@ -184,19 +195,7 @@ function FlowChartCanvas () {
         <Background gap={14} size={1} />
         <Controls />
       </ReactFlow>
-      {edgeContextMenu ? (
-        <div
-          className={cn(
-            `absolute w-[200px] h-fit p-1 rounded-md overflow-hidden inset-3 cursor-pointer backshadow transition-all bg-white border border-slate-700`
-          )}
-          style={{ top: edgeContextMenu.y, left: edgeContextMenu.x }}
-          ref={edgeContextMenuRef}
-        >
-          {edgeType.map(type => (
-            <CustomContextMenuItem key={type}>{type}</CustomContextMenuItem>
-          ))}
-        </div>
-      ) : null}
+
       <ShapesBucket position='top-left' />
     </>
   )

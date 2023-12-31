@@ -3,13 +3,14 @@ import {
   BaseEdge,
   EdgeLabelRenderer,
   EdgeProps,
+  MarkerType,
   getSimpleBezierPath
 } from 'reactflow'
 import EdgeWrapper from '../edge-wrapper'
 import React from 'react'
 
 function BezierEdge ({ ...props }: EdgeProps<EdgeData>) {
-  const [path, labelX, labelY] = getSimpleBezierPath({
+  const [path, labelX, labelY, offsetX, offsetY] = getSimpleBezierPath({
     sourceX: props.sourceX,
     sourceY: props.sourceY,
     targetX: props.targetX,
@@ -17,12 +18,22 @@ function BezierEdge ({ ...props }: EdgeProps<EdgeData>) {
     sourcePosition: props.sourcePosition,
     targetPosition: props.targetPosition
   })
+
+  console.log(props.markerStart, props.markerEnd)
+
   return (
-    <React.Fragment key={props.id}>
+    <>
       <>
-        <BaseEdge id={props.id} path={path} />
-        <EdgeLabelRenderer>
-          <EdgeWrapper {...props}>
+        <EdgeWrapper {...props}>
+          <path
+            d={path}
+            className='react-flow__edge-path'
+            markerEnd={'url(#triangle)'}
+            markerStart={'url(#triangle)'}
+          />
+        </EdgeWrapper>
+        {props.data?.label ? (
+          <EdgeLabelRenderer>
             <div
               style={{
                 position: 'absolute',
@@ -35,11 +46,10 @@ function BezierEdge ({ ...props }: EdgeProps<EdgeData>) {
                 {props.data?.label}
               </p>
             </div>
-          </EdgeWrapper>
-        </EdgeLabelRenderer>
+          </EdgeLabelRenderer>
+        ) : null}
       </>
-      {/* </EdgeWrapper> */}
-    </React.Fragment>
+    </>
   )
 }
 

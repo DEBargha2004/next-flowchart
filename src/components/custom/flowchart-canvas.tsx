@@ -9,7 +9,6 @@ import ReactFlow, {
   EdgeMouseHandler,
   EdgeProps,
   MarkerType,
-  Node,
   NodeChange,
   NodeMouseHandler,
   NodeProps,
@@ -18,13 +17,7 @@ import ReactFlow, {
 } from 'reactflow'
 
 import { setWindowDimension } from '@/reducers/window-resizer'
-import {
-  createEdge,
-  deleteEdge,
-  updateConnection,
-  updateEdge,
-  updateEdgeProps
-} from '@/reducers/edge'
+import { createEdge, updateConnection, updateEdge } from '@/reducers/edge'
 import { updateNode } from '@/reducers/node'
 import ShapesBucket from './shapes-bucket'
 import { NodeData, NodeType } from '@/types/node'
@@ -32,8 +25,6 @@ import nodesCollection from './nodes/index'
 import edgeCollection from './edges/index'
 import 'reactflow/dist/style.css'
 import { EdgeData, EdgeType } from '@/types/edge'
-import { cn } from '@/lib/utils'
-import CustomContextMenuItem from './contextmenu/contextmenu-item'
 
 type ContextMenuPosition = {
   x: number
@@ -51,11 +42,6 @@ function FlowChartCanvas () {
     useState<EdgeContextMenuProps | null>(null)
 
   const edgeContextMenuRef = useRef<HTMLDivElement>(null)
-
-  const edgeCollectionList: { label: string; type: EdgeType }[] = [
-    { label: 'Curved Edge', type: 'bezierEdge' },
-    { label: 'Step Edge', type: 'stepEdge' }
-  ]
 
   const dispatch = useAppDispatch()
 
@@ -128,7 +114,7 @@ function FlowChartCanvas () {
             height: 30
           },
           type: 'bezierEdge',
-          data: { label: 'bezierEdge' }
+          data: { label: 'bezierEdge', type: 'bezierEdge' }
         })
       ),
     []
@@ -140,15 +126,6 @@ function FlowChartCanvas () {
 
   const handleEdgeContextMenu: EdgeMouseHandler = useCallback((e, edge) => {
     e.preventDefault()
-    // console.log(edge)
-
-    // const { clientX, clientY } = e
-    // const calculatedMenuWidth = window.innerWidth - clientX
-    // const calculatedMenuHeight = window.innerHeight - clientY
-    // const contextMenuPosition: ContextMenuPosition = { x: clientX, y: clientY }
-    // contextMenuPosition.x = calculatedMenuWidth < 200 ? clientX - 200 : clientX
-    // contextMenuPosition.y = calculatedMenuHeight < 72 ? clientY - 72 : clientY
-    // setEdgeContextMenu({ event: e, position: contextMenuPosition, props: edge })
   }, [])
 
   const handleNodeChange = useCallback((nodeChange: NodeChange[]) => {

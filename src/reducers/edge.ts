@@ -8,6 +8,7 @@ import {
   updateEdge as updateEdge_reactflow
 } from 'reactflow'
 import { EdgeData, EdgeType } from '@/types/edge'
+import updateNestedObject from '../functions/updateNestedObject'
 
 const initialState: { edges: Edge<EdgeData>[] } = { edges: [] }
 
@@ -29,10 +30,11 @@ const edgeReducer = createSlice({
         edge => edge.id === action.payload.id
       )
       if (edgeIndex !== -1) {
-        state.edges[edgeIndex] = {
-          ...state.edges[edgeIndex],
-          ...action.payload.props
-        }
+        const updatedState = updateNestedObject(
+          action.payload.props,
+          state.edges[edgeIndex]
+        )
+        state.edges[edgeIndex] = updatedState
       }
     },
     updateConnection (

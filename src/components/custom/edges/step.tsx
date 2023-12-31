@@ -1,11 +1,14 @@
-import { EdgeData } from '@/types/edge'
+import { EdgeData, EdgeType } from '@/types/edge'
 import {
   BaseEdge,
   EdgeLabelRenderer,
   EdgeProps,
+  EdgeText,
+  MarkerType,
   getSmoothStepPath
 } from 'reactflow'
 import EdgeWrapper from '../edge-wrapper'
+import CustomBaseEdge from './base-edge'
 
 function StepEdge ({ ...props }: EdgeProps<EdgeData>) {
   const [path, labelX, labelY] = getSmoothStepPath({
@@ -16,12 +19,20 @@ function StepEdge ({ ...props }: EdgeProps<EdgeData>) {
     sourcePosition: props.sourcePosition,
     targetPosition: props.targetPosition
   })
+  console.log('path is ', path)
+
   return (
-    // <EdgeWrapper {...props}>
     <>
-      <BaseEdge id={props.id} path={path} />
-      <EdgeLabelRenderer>
+      <>
         <EdgeWrapper {...props}>
+          <path
+            d={path}
+            className='react-flow__edge-path'
+            markerEnd={'url(#triangle)'}
+            markerStart={'url(#triangle)'}
+          />
+        </EdgeWrapper>
+        <EdgeLabelRenderer>
           <div
             style={{
               position: 'absolute',
@@ -34,8 +45,8 @@ function StepEdge ({ ...props }: EdgeProps<EdgeData>) {
               {props.data?.label}
             </p>
           </div>
-        </EdgeWrapper>
-      </EdgeLabelRenderer>
+        </EdgeLabelRenderer>
+      </>
     </>
   )
 }
